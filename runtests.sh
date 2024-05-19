@@ -182,6 +182,7 @@ sleep 2
 
 echo -e "\n\nShould Pass GET USER 17 AS ADMIN"
 curl -X GET "http://localhost:8000/users/17" -H "Authorization: Bearer $TOKEN"
+
 echo -e "\n\nShould Pass GET USER 1 AS ADMIN"  
 curl -X GET "http://localhost:8000/users/1" -H "Authorization: Bearer $TOKEN"
 
