@@ -2,13 +2,14 @@ const { Router } = require('express')
 const { ValidationError } = require('sequelize')
 
 const { Photo, PhotoClientFields } = require('../models/photo')
+const { authorizeUser, authorizeAndSame } = require('../lib/tokens');
 
 const router = Router()
 
 /*
  * Route to create a new photo.
  */
-router.post('/', async function (req, res, next) {
+router.post('/', authorizeUser, async function (req, res, next) {
   try {
     const photo = await Photo.create(req.body, PhotoClientFields)
     res.status(201).send({ id: photo.id })
@@ -37,7 +38,7 @@ router.get('/:photoId', async function (req, res, next) {
 /*
  * Route to update a photo.
  */
-router.patch('/:photoId', async function (req, res, next) {
+router.patch('/:photoId', authorizeAndSame, async function (req, res, next) {
   const photoId = req.params.photoId
 
   /*

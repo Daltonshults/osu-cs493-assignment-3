@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const { ValidationError } = require('sequelize')
-
+const {authorizeUser, matchingUserIds, authorizeAndSame } = require('../lib/tokens')
 const { Review, ReviewClientFields } = require('../models/review')
 
 const router = Router()
@@ -8,7 +8,7 @@ const router = Router()
 /*
  * Route to create a new review.
  */
-router.post('/', async function (req, res, next) {
+router.post('/', authorizeUser, async function (req, res, next) {
   try {
     const review = await Review.create(req.body, ReviewClientFields)
     res.status(201).send({ id: review.id })
@@ -37,7 +37,7 @@ router.get('/:reviewId', async function (req, res, next) {
 /*
  * Route to update a review.
  */
-router.patch('/:reviewId', async function (req, res, next) {
+router.patch('/:reviewId', authorizeAndSame, async function (req, res, next) {
   const reviewId = req.params.reviewId
 
   /*
@@ -59,7 +59,7 @@ router.patch('/:reviewId', async function (req, res, next) {
 /*
  * Route to delete a review.
  */
-router.delete('/:reviewId', async function (req, res, next) {
+router.delete('/:reviewId', authorizeAndSame, async function (req, res, next) {
   const reviewId = req.params.reviewId
   const result = await Review.destroy({ where: { id: reviewId }})
   if (result > 0) {
