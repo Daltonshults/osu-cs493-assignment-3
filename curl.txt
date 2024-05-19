@@ -1,0 +1,25 @@
+curl -X POST "http://localhost:8000/users" -H "Content-Type: application/json" -d '{"name": "Jimmothy Williams", "email": "jimmothy@williams.com", "password": "hunter2"}'
+
+
+curl -X POST "http://localhost:8000/users/login" -H "Content-Type: application/json" -d '{"email": "jimmothy@williams.com", "password": "hunter2"}'
+
+TOKEN=$(curl -s -X POST "http://localhost:8000/users/login" -H "Content-Type: application/json" -d '{"email": "jimmothy@williams.com", "password": "hunter2"}' | jq -r '.Token')
+
+echo $TOKEN
+
+curl -X POST "http://localhost:8000/users/login" -H "Content-Type: application/json" -d '{"email": "jimmothy@williams.com", "password": "hunter2252"}'
+
+curl -X GET "http://localhost:8000/users/17/businesses" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJpYXQiOjE3MTYwNjY4NjcsImV4cCI6MTcxNjE1MzI2N30.6reYwQPsq0X_pZiYDIRqJ-CUnm5s4ioXFpn0LSiIRC8"
+
+curl -X GET "http://localhost:8000/users/1/businesses" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJpYXQiOjE3MTYwNjY4NjcsImV4cCI6MTcxNjE1MzI2N30.6reYwQPsq0X_pZiYDIRqJ-CUnm5s4ioXFpn0LSiIRC8"
+
+// Require a token from the above value
+curl -X GET "http://localhost:8000/users/17/businesses" -H "Authorization: Bearer $TOKEN"
+
+curl -X GET "http://localhost:8000/users/1/businesses" -H "Authorization: Bearer $TOKEN"
+
+curl -X GET "http://localhost:8000/users/17" -H "Authorization: Bearer $TOKEN"
+
+curl -X GET "http://localhost:8000/users/17" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJpYXQiOjE3MTYxNDIyNzYsImV4cCI6MTcxNjIyODY3Nn0.tM6yT8bFvohPLF9U2iJIYFL-R1ID_EonONgFhKbXIY4"
+
+UPDATE users SET admin = 1 WHERE name = 'Jimmothy Williams';
